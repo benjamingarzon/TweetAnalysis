@@ -1,6 +1,6 @@
 #!/usr/bin/python
 '''
-Downloads tweets that contain a certain word and stores date, time, longitude, latitutde and the message in a database
+Downloads tweets that contain a certain word and stores date, time, longitude, latitude and the message in a database
 
 Usage: findTweets word credentials.json
 

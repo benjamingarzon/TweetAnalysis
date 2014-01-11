@@ -1,16 +1,6 @@
 import oauth2 as oauth
 import urllib2 as urllib
 
-'''
-Download tweets from the twitter stream
-Requires a file with the credentials in this format
-{"access_token_key":"XXXX",
-"access_token_secret":"XXXX",
-"consumer_key":"XXXX",
-"consumer_secret":"XXXX"}
-
-'''
-
 _debug = 0
 
 signature_method_hmac_sha1 = oauth.SignatureMethod_HMAC_SHA1()
@@ -22,7 +12,13 @@ https_handler = urllib.HTTPSHandler(debuglevel=_debug)
 
 '''
 Construct, sign, and open a twitter request
-using the hard-coded credentials above.
+using the credentials above from a file.
+Requires a file with the credentials in this format
+{"access_token_key":"XXXX",
+"access_token_secret":"XXXX",
+"consumer_key":"XXXX",
+"consumer_secret":"XXXX"}
+
 '''
 def twitterreq(url, method, parameters, credentials):
 
