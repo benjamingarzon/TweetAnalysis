@@ -30,7 +30,7 @@ echo "DROP DATABASE IF EXISTS $DBNAME;" > commands.sql
 echo "CREATE DATABASE $DBNAME;" >> commands.sql
 echo "CREATE user '$USER'@'localhost' IDENTIFIED BY '$PASSWORD';" >> commands.sql
 echo "USE $DBNAME;"  >> commands.sql
-echo "GRANT ALL ON $DBNAME.* TO '$USER'@'localhost';" >> commands.sql
+echo "GRANT ALL ON $DBNAME.* TO '$USER'@'%';" >> commands.sql
 echo "QUIT" >> commands.sql
 
 mysql -u root -p < commands.sql
