@@ -2,7 +2,7 @@
 
 # set up system for TweetAnalysis tools
 # you need a credentials file as described in findTweets.py
-# and set up the these environment variables with the same values
+# Just set the same password and run this script
 
 PASSWORD=""
 USER="tweetuser"
@@ -27,6 +27,7 @@ git clone https://github.com/benjamingarzon/TweetAnalysis.git
 
 # open remote connections
 sudo sed -i.bak -e s/127.0.0.1/0.0.0.0/g /etc/mysql/my.cnf
+sudo service mysql restart 
 
 # create database and table
 echo "DROP DATABASE IF EXISTS $DBNAME;" > commands.sql
