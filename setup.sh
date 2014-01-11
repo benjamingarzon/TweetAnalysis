@@ -5,8 +5,11 @@
 # and set up the these environment variables with the same values
 
 PASSWORD=
-USER=
-DBNAME=
+USER="tweetuser"
+DBNAME="tweetsdb"
+
+# update
+sudo apt-get update
 
 # install git
 sudo apt-get install git
@@ -40,3 +43,6 @@ echo "QUIT" >> commands.sql
 mysql -u $USER -p"$PASSWORD" < commands.sql
 
 rm commands.sql
+
+echo "Done"
+
