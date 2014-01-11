@@ -4,7 +4,7 @@
 # you need a credentials file as described in findTweets.py
 # and set up the these environment variables with the same values
 
-PASSWORD=
+PASSWORD=""
 USER="tweetuser"
 DBNAME="tweetsdb"
 
@@ -25,11 +25,15 @@ sudo pip install oauth2
 # get code
 git clone https://github.com/benjamingarzon/TweetAnalysis.git
 
+# open remote connections
+sudo sed -i.bak -e s/127.0.0.1/0.0.0.0/g /etc/mysql/my.cnf
+
 # create database and table
 echo "DROP DATABASE IF EXISTS $DBNAME;" > commands.sql
 echo "CREATE DATABASE $DBNAME;" >> commands.sql
 echo "CREATE user '$USER'@'localhost' IDENTIFIED BY '$PASSWORD';" >> commands.sql
-echo "USE $DBNAME;"  >> commands.sql
+echo "CREATE user '$USER'@'%' IDENTIFIED BY '$PASSWORD';" >> commands.sql
+echo "GRANT ALL ON $DBNAME.* TO '$USER'@'localhost';" >> commands.sql
 echo "GRANT ALL ON $DBNAME.* TO '$USER'@'%';" >> commands.sql
 echo "QUIT" >> commands.sql
 
