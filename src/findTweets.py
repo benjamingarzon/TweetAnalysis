@@ -23,6 +23,7 @@ import sys
 import json
 import twitterstream
 import MySQLdb as mdb
+import time
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -30,7 +31,7 @@ sys.setdefaultencoding("utf-8")
 def parseLine(word, line):
     ''' extract attributes from each tweet (line of the twitter stream) '''
 
-    day, month, year, time, lon, lat, text = 0, 0, 0, 0, None, None, None
+    date, lon, lat, text = 0, 0, 0, None
     found = False
     d = json.loads(line)
     
@@ -43,8 +44,9 @@ def parseLine(word, line):
             # extract information                
             if 'created_at' in d.keys():
                 created = d[u'created_at']
-                date = created.split()
-                day, month, year, time = date[2], date[1], date[5], date[3]
+
+		# do conversion to mysql datetime format
+                date = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(created,'%a %b %d %H:%M:%S +0000 %Y'))
                 
             if 'coordinates' in d.keys():
                 coord = d[u'coordinates']
@@ -52,7 +54,7 @@ def parseLine(word, line):
                     coord = coord[u'coordinates']
                     lon, lat = coord[0], coord[1]
                 
-    return ((day, month, year, time, lon, lat, text), found)
+    return ((date, lon, lat, text), found)
 
 def fetchData(word, filename):
     ''' download tweets and insert attributes of those containing WORD in the database '''
@@ -77,8 +79,8 @@ def fetchData(word, filename):
             if found:
 		
                 outtext = '\t'.join(map(str, outrow))+"\n"
-                print outtext
-                c.execute("INSERT INTO tweets(day, month, year, time, lon, lat, message) VALUES (%s,%s,%s,%s,%s,%s,%s)", outrow)
+                print outrow
+                c.execute("INSERT INTO tweets(date, lon, lat, message) VALUES (%s,%s,%s,%s)", outrow)
 		conn.commit()
 
     except mdb.Error, e:
