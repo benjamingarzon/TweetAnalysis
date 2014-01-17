@@ -3,6 +3,8 @@
 import sys
 import json
 import MySQLdb as mdb
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 def getstats(filename, figname):
@@ -14,25 +16,24 @@ def getstats(filename, figname):
 	try:
             conn = mdb.connect(credentials['host'], credentials['user'], credentials['pwd'], credentials['database']);
             c = conn.cursor()
-            c.execute("SELECT HOUR(date), COUNT(*) FROM tweets GROUP BY HOUR(date);" )
+            c.execute("SELECT DATE(date), COUNT(*) FROM tweets GROUP BY DATE(date);" )
             rows = c.fetchall()
 	    columns = zip(*rows)
 
             # get info
 	    dates = columns[0]
 	    counts = columns[1]
-
 	    print dates
 	    print counts
-
+	    # print out
 	    plt.clf()
-    	    plt.plot(dates, counts, label="ValueF")
-            #plt.legend(['Fund', 'Market'])
+    	    plt.plot(dates, counts, label="Counts")
+	    #plt.legend(['Fund', 'Market'])
     	    plt.ylabel('Counts')
             #plt.xticks(rotation=70)
 	    plt.xlabel('Date')
-            #plt.tick_params(axis='both', which='major', labelsize=8)
-            #plt.tick_params(axis='both', which='minor', labelsize=6)
+            plt.tick_params(axis='both', which='major', labelsize=8)
+            plt.tick_params(axis='both', which='minor', labelsize=6)
     	    plt.savefig(figname, format='png')
 
         except mdb.Error, e:
