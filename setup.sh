@@ -68,7 +68,8 @@ sudo service apache2 restart
 nohup src/findTweets $WORD config/credentials.json &
 
 # schedule sentiment analysis and statistics
-echo "0 * * * * src/calculatestats.py " | crontab
+DIR=`pwd`
+echo "0 0 * * * cd $DIR; src/calculatestats.py config/credentials.json web/stats.png" | crontab
 
 echo "Done"
 
