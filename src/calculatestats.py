@@ -5,7 +5,7 @@ import json
 import MySQLdb as mdb
 import matplotlib.pyplot as plt
 
-def getstats(filename):
+def getstats(filename, figname):
 
     # get credentials
     with open(filename) as credfile:
@@ -16,14 +16,11 @@ def getstats(filename):
             c = conn.cursor()
             c.execute("SELECT HOUR(date), COUNT(*) FROM tweets GROUP BY HOUR(date);" )
             rows = c.fetchall()
+	    columns = zip(*rows)
 
             # get info
-	    dates = list()
-	    counts = list()
-
-	    for row in rows:
-		dates.append(row[0])
-		counts.append(row[1])
+	    dates = columns[0]
+	    counts = columns[1]
 
 	    print dates
 	    print counts
@@ -36,7 +33,7 @@ def getstats(filename):
 	    plt.xlabel('Date')
             #plt.tick_params(axis='both', which='major', labelsize=8)
             #plt.tick_params(axis='both', which='minor', labelsize=6)
-    	    plt.savefig("stats.png", format='png')
+    	    plt.savefig(figname, format='png')
 
         except mdb.Error, e:
   
@@ -52,9 +49,9 @@ def getstats(filename):
 def main():
 
     filename = sys.argv[1]
-   
+    figname = sys.argv[2]
     # getstats from table
-    getstats(filename)
+    getstats(filename, figname)
                
 if __name__ == '__main__':
     main()    

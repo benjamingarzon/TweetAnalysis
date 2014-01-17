@@ -18,6 +18,8 @@ DBNAME="tweetsdb"
 # update
 sudo apt-get update
 
+# install apache
+sudo apt-get install apache2
 
 # install mysql
 sudo apt-get install mysql-server
@@ -49,8 +51,15 @@ echo "CREATE TABLE tweets (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, date DATE
 echo "QUIT" >> commands.sql
 
 mysql -u $USER -p"$PASSWORD" < commands.sql
-
 rm commands.sql
+
+# create website
+cd TweetAnalysis
+mkdir web
+sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/webstats
+sudo sed -i.bak -e 's#/var/www#~/TweetAnalysis/web#g' /etc/apache2/sites-available/webstats
+sudo a2dissite default && sudo a2ensite webstats
+sudo service apache2 restart
 
 echo "Done"
 
