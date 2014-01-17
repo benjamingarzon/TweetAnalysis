@@ -56,8 +56,9 @@ rm commands.sql
 # create website
 cd TweetAnalysis
 mkdir web
+DIR=`pwd`/web
 sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/webstats
-sudo sed -i.bak -e 's#/var/www#~/TweetAnalysis/web#g' /etc/apache2/sites-available/webstats
+sudo sed -i.bak -e 's#/var/www#/home/ubuntu/TweetAnalysis/web#g' /etc/apache2/sites-available/webstats
 sudo a2dissite default && sudo a2ensite webstats
 sudo service apache2 restart
 
