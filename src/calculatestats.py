@@ -16,7 +16,7 @@ def getstats(filename, figname):
 	try:
             conn = mdb.connect(credentials['host'], credentials['user'], credentials['pwd'], credentials['database']);
             c = conn.cursor()
-            c.execute("SELECT DATE(date), COUNT(*) FROM tweets GROUP BY DATE(date);" )
+            c.execute("SELECT date, COUNT(*) FROM tweets GROUP BY DATE(date), HOUR(date);" )
             rows = c.fetchall()
 	    columns = zip(*rows)
 
