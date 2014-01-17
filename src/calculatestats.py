@@ -23,14 +23,14 @@ def getstats(filename, figname):
             # get info
 	    dates = columns[0]
 	    counts = columns[1]
-	    print dates
-	    print counts
+	    #print dates
+	    #print counts
 	    # print out
 	    plt.clf()
     	    plt.plot(dates, counts, label="Counts")
 	    #plt.legend(['Fund', 'Market'])
     	    plt.ylabel('Counts')
-            #plt.xticks(rotation=70)
+            plt.xticks(rotation=70)
 	    plt.xlabel('Date')
             plt.tick_params(axis='both', which='major', labelsize=8)
             plt.tick_params(axis='both', which='minor', labelsize=6)
