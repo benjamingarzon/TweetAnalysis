@@ -25,7 +25,7 @@ def classify(classfilename, credfilename, stopfilename, featurefilename):
 	    print "Connecting to database"
             conn = mdb.connect(credentials['host'], credentials['user'], credentials['pwd'], credentials['database']);
             c = conn.cursor()
-            c.execute("SELECT tweets.id, tweets.date, message FROM tweets LEFT JOIN sentiments2 ON tweets.id = sentiments.id WHERE sentiments.id IS NULL;" )
+            c.execute("SELECT tweets.id, tweets.date, message FROM tweets LEFT JOIN sentiments ON tweets.id = sentiments.id WHERE sentiments.id IS NULL;" )
             rows = c.fetchall()
 
 	    # classify each tweet and save result in sentiment db

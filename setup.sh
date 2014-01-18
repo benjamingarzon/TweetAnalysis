@@ -30,6 +30,9 @@ sudo apt-get -y install python-pip
 sudo apt-get -y install python-MySQLdb
 sudo pip install oauth2
 sudo apt-get -y install python-matplotlib
+sudo apt-get -y install python-nltk
+sudo apt-get -y install python-numpy
+
 
 # open remote connections
 sudo sed -i.bak -e s/127.0.0.1/0.0.0.0/g /etc/mysql/my.cnf
@@ -70,7 +73,7 @@ nohup src/findTweets $WORD config/credentials.json &
 
 # schedule sentiment analysis and statistics
 DIR=`pwd`
-echo "0 * * * * cd $DIR; src/calculatestats.py config/credentials.json web; src/useClassifier.py data/classifier.pkl config/credentials.json data/stopwords.txt data/feature_list.txt " | crontab
+echo "0 * * * * cd $DIR; src/useClassifier.py data/classifier.pkl config/credentials.json data/stopwords.txt data/feature_list.txt; src/calculatestats.py config/credentials.json web" | crontab
 
 echo "Done"
 
