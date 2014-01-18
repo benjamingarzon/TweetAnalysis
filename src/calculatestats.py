@@ -4,8 +4,26 @@ import sys
 import json
 import MySQLdb as mdb
 import matplotlib as mpl
+from matplotlib.dates import DateFormatter, HourLocator, DayLocator
 mpl.use('Agg')
 import matplotlib.pyplot as plt
+
+days = DayLocator()
+hours = HourLocator()
+dayFormatter = DateFormatter('%d/%m/%y')      
+
+def printfig(x, y, label, filename):
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    plt.ylabel(label)
+    plt.xticks(rotation=70)
+    plt.xlabel('Date')
+    ax.xaxis.set_major_locator(days)
+    ax.xaxis.set_minor_locator(hours)
+    ax.xaxis.set_major_formatter(dayFormatter)
+    plt.tick_params(axis='both', which='major', labelsize=8)
+    plt.savefig(filename, format='png')
 
 def getstats(filename, pathname):
 
@@ -28,24 +46,10 @@ def getstats(filename, pathname):
 	    #print counts
 
 	    # print tweets
-	    plt.clf()
-    	    plt.plot(dates, tweets, label="Tweets")
-	    plt.ylabel('Tweets')
-            plt.xticks(rotation=70)
-	    plt.xlabel('Date')
-            plt.tick_params(axis='both', which='major', labelsize=8)
-            plt.tick_params(axis='both', which='minor', labelsize=6)
-    	    plt.savefig(pathname+'/tweets.png', format='png')
+	    printfig(dates, tweets, 'Tweets', pathname+'/tweets.png')
 
 	    # print sentiment
-	    plt.clf()
-    	    plt.plot(dates, sentiment, label="Sentiment")
-	    plt.ylabel('Average sentiment')
-            plt.xticks(rotation=70)
-	    plt.xlabel('Date')
-            plt.tick_params(axis='both', which='major', labelsize=8)
-            plt.tick_params(axis='both', which='minor', labelsize=6)
-    	    plt.savefig(pathname+'/sentiment.png', format='png')
+	    printfig(dates, sentiment, 'Average Sentiment', pathname+'/sentiment.png')
 
 
         except mdb.Error, e:
