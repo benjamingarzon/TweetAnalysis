@@ -8,6 +8,8 @@
 # sudo apt-get -y install git
 ## get code
 # git clone https://github.com/benjamingarzon/TweetAnalysis.git
+# cd TweetAnalysis
+#./setup.sh
 
 # You need a credentials file config/credentials.json as described in findTweets.py
 # Just set the same password and run this script
@@ -62,7 +64,7 @@ mysql -u $USER -p"$PASSWORD" < commands.sql
 rm commands.sql
 
 # create website
-cd TweetAnalysis
+
 sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/webstats
 sudo sed -i.bak -e 's#/var/www#/home/ubuntu/TweetAnalysis/web#g' /etc/apache2/sites-available/webstats
 sudo a2dissite default && sudo a2ensite webstats
