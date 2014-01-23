@@ -4,7 +4,8 @@
 
 # Do this before running this script
 ## install git
-# sudo apt-get install git
+# sudo apt-get update
+# sudo apt-get -y install git
 ## get code
 # git clone https://github.com/benjamingarzon/TweetAnalysis.git
 
@@ -68,7 +69,7 @@ sudo a2dissite default && sudo a2ensite webstats
 sudo service apache2 restart
 
 # download tweets
-nohup src/findTweets $WORD config/credentials.json &
+nohup src/findTweets.py $WORD config/credentials.json &
 
 # schedule sentiment analysis and statistics for every hour
 DIR=`pwd`
