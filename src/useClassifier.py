@@ -1,4 +1,17 @@
 #!/usr/bin/python
+
+'''
+Sentiment analysis of the tweets. Apply classifier to each of the tweets in the database and store back the result.
+
+useClassifier.py CLASSIFIER CREDENTIALS STOPWORD FEATURELIST
+
+CLASSIFIER : pickle file containing the classifier
+CREDENTIALS : file with credentials to access database
+STOPWORD : file with a list of stop words
+FEATURELIST : list of words (features) of the classifier
+
+'''
+
 import pickle
 import sys
 import json
@@ -7,6 +20,8 @@ import classfunctions as cf
 
 
 def classify(classfilename, credfilename, stopfilename, featurefilename):
+    ''' runs through tweets database table, classifies them using Naive Bayes and stores content in another table'''
+
     # get stop words and feature list
     stopWords = cf.getStopWordList(stopfilename)
     featureList = cf.getFeatureList(featurefilename)
@@ -56,6 +71,7 @@ def classify(classfilename, credfilename, stopfilename, featurefilename):
 
 
 def main():
+    ''' useClassifier.py CLASSIFIER CREDENTIALS STOPWORD FEATURELIST '''
 
     classfilename = sys.argv[1]
     credfilename = sys.argv[2]

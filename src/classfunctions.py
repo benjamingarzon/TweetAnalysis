@@ -1,3 +1,7 @@
+'''
+Some functions to preprocess the tweets and extract features from them 
+See http://ravikiranj.net/drupal/201205/code/machine-learning/how-build-twitter-sentiment-analyzer
+'''
 import re, csv
 
 # translate classification into numbers
@@ -5,14 +9,14 @@ transsent = {'positive':1, 'neutral':0, 'negative':-1}
 
 #start replaceTwoOrMore
 def replaceTwoOrMore(s):
-    #look for 2 or more repetitions of character
+    '''look for 2 or more repetitions of character'''
     pattern = re.compile(r"(.)\1{1,}", re.DOTALL) 
     return pattern.sub(r"\1\1", s)
 #end
 
 #start process_tweet
 def processTweet(tweet):
-    # process the tweets
+    ''' process the tweets'''
     
     #Convert to lower case
     tweet = tweet.lower()
@@ -31,7 +35,7 @@ def processTweet(tweet):
 
 #start getStopWordList
 def getStopWordList(stopWordListFileName):
-    #read the stopwords
+    '''read the stopwords'''
     stopWords = []
     stopWords.append('AT_USER')
     stopWords.append('URL')
@@ -48,6 +52,7 @@ def getStopWordList(stopWordListFileName):
 
 #start getfeatureVector
 def getFeatureVector(tweet, stopWords):
+    '''make a feature vector from tweet'''
     featureVector = []  
     words = tweet.split()
     for w in words:
@@ -67,6 +72,7 @@ def getFeatureVector(tweet, stopWords):
 
 #start getFeatureList
 def getFeatureList(fileName):
+    '''open the list of features from a file'''
     fp = open(fileName, 'r')
     line = fp.readline()
     featureList = []
@@ -80,6 +86,7 @@ def getFeatureList(fileName):
 
 #start extract_features
 def extract_features(tweet, featureList):
+    '''extract features from feature list'''
     tweet_words = set(tweet)
     features = {}
     for word in featureList:

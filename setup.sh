@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Set up system for TweetAnalysis tools on Ubuntu machine
+# Set up system for TweetAnalysis tools on Ubuntu machine with username 'ubuntu'
 
 # Do this before running this script
 ## install git
@@ -63,7 +63,6 @@ rm commands.sql
 # create website
 cd TweetAnalysis
 sudo cp /etc/apache2/sites-available/default /etc/apache2/sites-available/webstats
-
 sudo sed -i.bak -e 's#/var/www#/home/ubuntu/TweetAnalysis/web#g' /etc/apache2/sites-available/webstats
 sudo a2dissite default && sudo a2ensite webstats
 sudo service apache2 restart
@@ -71,7 +70,7 @@ sudo service apache2 restart
 # download tweets
 nohup src/findTweets $WORD config/credentials.json &
 
-# schedule sentiment analysis and statistics
+# schedule sentiment analysis and statistics for every hour
 DIR=`pwd`
 echo "0 * * * * cd $DIR; src/useClassifier.py data/classifier.pkl config/credentials.json data/stopwords.txt data/feature_list.txt; src/calculatestats.py config/credentials.json web" | crontab
 

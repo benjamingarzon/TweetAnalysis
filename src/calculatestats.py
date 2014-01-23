@@ -1,5 +1,12 @@
 #!/usr/bin/python
+'''
+Calculate and plot time series of tweet count and average sentiment.
 
+calculatestats.py CREDENTIALS PATHNAME
+
+CREDENTIALS : credentials to access the database
+PATHNAME : directory to store the resulting plots
+'''
 import sys
 import json
 import MySQLdb as mdb
@@ -12,8 +19,8 @@ days = DayLocator()
 hours = HourLocator()
 dayFormatter = DateFormatter('%d/%m/%y')      
 
-def printfig(x, y, label, filename):
-
+def plotfig(x, y, label, filename):
+    ''' plot figure given x, y data'''
     fig, ax = plt.subplots()
     ax.plot(x, y)
     plt.ylabel(label)
@@ -26,7 +33,7 @@ def printfig(x, y, label, filename):
     plt.savefig(filename, format='png')
 
 def getstats(filename, pathname):
-
+    ''' calculate statistics and plot time series'''
     # get credentials
     with open(filename) as credfile:
         credentials = json.load(credfile)
@@ -34,7 +41,8 @@ def getstats(filename, pathname):
 	try:
             conn = mdb.connect(credentials['host'], credentials['user'], credentials['pwd'], credentials['database']);
             c = conn.cursor()
-            c.execute("SELECT date, COUNT(*), AVG(sentiment) FROM sentiments GROUP BY DATE(date), HOUR(date);" )
+            #c.execute("SELECT date, COUNT(*), AVG(sentiment) FROM sentiments GROUP BY DATE(date), (HOUR(date)-1) div 3;" )
+	    c.execute("SELECT date, COUNT(*), AVG(sentiment) FROM sentiments GROUP BY DATE(date), HOUR(date);" )
             rows = c.fetchall()
 	    columns = zip(*rows)
 
@@ -46,10 +54,10 @@ def getstats(filename, pathname):
 	    #print counts
 
 	    # print tweets
-	    printfig(dates, tweets, 'Tweets', pathname+'/tweets.png')
+	    plotfig(dates, tweets, 'Tweets', pathname+'/tweets.png')
 
 	    # print sentiment
-	    printfig(dates, sentiment, 'Average Sentiment', pathname+'/sentiment.png')
+	    plotfig(dates, sentiment, 'Average Sentiment', pathname+'/sentiment.png')
 
 
         except mdb.Error, e:
@@ -64,6 +72,7 @@ def getstats(filename, pathname):
 
 
 def main():
+    ''' calculatestats.py CREDENTIALS PATHNAME '''
 
     filename = sys.argv[1]
     pathname = sys.argv[2]
