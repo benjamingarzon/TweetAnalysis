@@ -64,29 +64,40 @@ def fetchData(word, filename):
     with open(filename) as credfile:
         credentials = json.load(credfile) 
     
-    # download tweets
-    url = "https://stream.twitter.com/1/statuses/sample.json"
-    parameters = []
-    response = twitterstream.twitterreq(url, "GET", parameters, credentials)
-        
     # connect to db
     try:
         conn = mdb.connect(credentials['host'], credentials['user'], credentials['pwd'], credentials['database']);
         c = conn.cursor()
-        
-        # parse lines and insert info in db
-        for outrow, found in (parseLine(word, line) for line in response):
-            if found:
-		
-                outtext = '\t'.join(map(str, outrow))+"\n"
-                print outrow
-                c.execute("INSERT INTO tweets(date, lon, lat, message) VALUES (%s,%s,%s,%s)", outrow)
-		conn.commit()
 
     except mdb.Error, e:
   
         print "Error %d: %s" % (e.args[0],e.args[1])
         sys.exit(1)
+
+    else:
+        
+	while 1:
+        
+	    try: 
+	        # download tweets
+                url = "https://stream.twitter.com/1/statuses/sample.json"
+                parameters = []
+	        response = twitterstream.twitterreq(url, "GET", parameters, credentials)
+
+    	    except httplib.IncompleteRead, e:
+		print "Error fetching tweet " 
+		print e
+		print "Connecting again "
+	   
+	    else:
+        	# parse lines and insert info in db
+        	for outrow, found in (parseLine(word, line) for line in response):
+            	    if found:
+		
+                        outtext = '\t'.join(map(str, outrow))+"\n"
+                        print outrow
+                        c.execute("INSERT INTO tweets(date, lon, lat, message) VALUES (%s,%s,%s,%s)", outrow)
+		        conn.commit()
     
     finally:    
         
