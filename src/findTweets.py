@@ -24,6 +24,8 @@ import json
 import twitterstream
 import MySQLdb as mdb
 import time
+import httplib
+import urllib2
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -78,16 +80,19 @@ def fetchData(word, filename):
         
 	while 1:
         
-	    try: 
-	        # download tweets
-                url = "https://stream.twitter.com/1/statuses/sample.json"
-                parameters = []
-	        response = twitterstream.twitterreq(url, "GET", parameters, credentials)
+            #download tweets
+            url = "https://stream.twitter.com/1/statuses/sample.json"
+            parameters = []
 
-    	    except httplib.IncompleteRead, e:
-		print "Error fetching tweet " 
-		print e
-		print "Connecting again "
+	    try: 	     
+	        response = twitterstream.twitterreq(url, "GET", parameters, credentials)
+	
+	    except urllib2.HTTPError, e:
+                print 'HTTPError = ' + str(e.code)
+            except urllib2.URLError, e:
+                print 'URLError = ' + str(e.reason)
+            except httplib.HTTPException, e:
+                print 'HTTPException'
 	   
 	    else:
         	# parse lines and insert info in db
