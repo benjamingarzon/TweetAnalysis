@@ -54,7 +54,7 @@ mysql -u root -p < commands.sql
 
 echo "USE $DBNAME;" > commands.sql
 echo "DROP TABLE IF EXISTS tweets;" >> commands.sql
-echo "CREATE TABLE tweets (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, date DATETIME, lon FLOAT, lat FLOAT, message VARCHAR(140));" >> commands.sql
+echo "CREATE TABLE tweets (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, date DATETIME, lon FLOAT, lat FLOAT, message VARCHAR(200));" >> commands.sql
 
 echo "DROP TABLE IF EXISTS sentiments;" >> commands.sql
 echo "CREATE TABLE sentiments (id INT NOT NULL PRIMARY KEY, date DATETIME, sentiment INT);" >> commands.sql
