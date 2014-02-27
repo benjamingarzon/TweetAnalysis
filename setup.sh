@@ -71,7 +71,8 @@ sudo a2dissite default && sudo a2ensite webstats
 sudo service apache2 restart
 
 # download tweets
-nohup src/findTweets.py $WORD config/credentials.json &
+nohup 2> err.log ./runFindTweets.sh $WORD &
+
 
 # schedule sentiment analysis and statistics for every hour
 DIR=`pwd`
